@@ -130,6 +130,7 @@ main {
     height: 900px;
     overflow: hidden;
     position: relative;
+    margin-left: -600px;
 }
 
 #game-wrapper canvas {
