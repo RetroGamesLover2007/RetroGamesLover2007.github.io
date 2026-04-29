@@ -8,8 +8,13 @@ window.addEventListener('load', function() {
         { name: "Streets of Rage 2", system: "segaMD", rom: "roms/sor2.md" }
     ];
 
+    var currentEmulator = null;
+
     const searchInput = document.getElementById('search-bar');
     const gameList = document.getElementById('game-list');
+    const controlBar = document.getElementById('control-bar');
+
+    controlBar.style.display = 'none';
 
     function renderGameList(filterText) {
         gameList.innerHTML = '';
@@ -52,36 +57,64 @@ window.addEventListener('load', function() {
     renderGameList('');
 
     function launchGame(system, romPath) {
-    document.getElementById('game-wrapper').innerHTML = '';
+        document.getElementById('game-wrapper').innerHTML = '';
 
-    const filename = romPath.split('/').pop();
+        const filename = romPath.split('/').pop();
 
-    new EmulatorJS('#game-wrapper', {
-        system: system,
-        rom: romPath,
-        gameUrl: romPath,
-        gameFileName: filename,
-        autosave: true,
-        dataPath: 'data/',
-        controlBarPosition: 'bottom',
-        controlBarVisible: true,
-        controlBarCollapsed: false
+        currentEmulator = new EmulatorJS('#game-wrapper', {
+            system: system,
+            rom: romPath,
+            gameUrl: romPath,
+            gameFileName: filename,
+            autosave: false,
+            dataPath: 'data/',
+            controlBarVisible: false,
+            menuBarVisible: false
+        });
+
+        controlBar.style.display = 'flex';
+
+        setTimeout(function() {
+            const canvas = document.querySelector('#game-wrapper canvas');
+            const iframe = document.querySelector('#game-wrapper iframe');
+            if (canvas) {
+                canvas.style.width = '800px';
+                canvas.style.height = '600px';
+            }
+            if (iframe) {
+                iframe.style.width = '800px';
+                iframe.style.height = '600px';
+            }
+        }, 1000);
+    }
+
+    document.getElementById('btn-play').addEventListener('click', function() {
+        if (currentEmulator) currentEmulator.resume();
     });
 
-    setTimeout(function() {
-        const canvas = document.querySelector('#game-wrapper canvas');
-        const iframe = document.querySelector('#game-wrapper iframe');
-        
-        if (canvas) {
-            canvas.style.width = '800px';
-            canvas.style.height = '600px';
+    document.getElementById('btn-pause').addEventListener('click', function() {
+        if (currentEmulator) currentEmulator.pause();
+    });
+
+    document.getElementById('btn-stop').addEventListener('click', function() {
+        if (currentEmulator) {
+            currentEmulator.exit();
+            currentEmulator = null;
+            document.getElementById('game-wrapper').innerHTML = '';
+            controlBar.style.display = 'none';
         }
-        
-        if (iframe) {
-            iframe.style.width = '800px';
-            iframe.style.height = '600px';
-        }
-    }, 1000);
-}
+    });
+
+    document.getElementById('btn-save').addEventListener('click', function() {
+        if (currentEmulator) currentEmulator.saveState();
+    });
+
+    document.getElementById('btn-load').addEventListener('click', function() {
+        if (currentEmulator) currentEmulator.loadState();
+    });
+
+    document.getElementById('btn-fullscreen').addEventListener('click', function() {
+        if (currentEmulator) currentEmulator.enterFullscreen();
+    });
 
 });
