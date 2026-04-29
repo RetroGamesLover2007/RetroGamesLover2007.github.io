@@ -150,15 +150,6 @@
             image-rendering: pixelated;
         }
 
-        /* Hide only the visual UI bars, not internal elements */
-        .emulatorjs-menu-bar,
-        .emulatorjs-control-bar,
-        .emulatorjs-start-menu,
-        .emulatorjs-cheats-menu,
-        .emulatorjs-save-menu {
-            display: none !important;
-        }
-
         #control-bar {
             width: 800px;
             display: flex;
@@ -290,9 +281,7 @@
                     gameUrl: romPath,
                     gameFileName: filename,
                     autosave: false,
-                    dataPath: 'data/',
-                    controlBarVisible: false,
-                    menuBarVisible: false
+                    dataPath: 'data/'
                 });
 
                 controlBar.style.display = 'flex';
@@ -340,8 +329,8 @@
             });
 
             document.getElementById('btn-fullscreen').addEventListener('click', function() {
-                if (currentEmulator && typeof currentEmulator.toggleFullscreen === 'function') {
-                    currentEmulator.toggleFullscreen();
+                if (currentEmulator && currentEmulator.gameManager && typeof currentEmulator.gameManager.openFullscreen === 'function') {
+                    currentEmulator.gameManager.openFullscreen();
                 }
             });
 
