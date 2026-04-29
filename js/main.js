@@ -52,9 +52,12 @@ window.addEventListener('load', function() {
     renderGameList('');
 
     function launchGame(system, romPath) {
+        console.log('Launching game:', system, romPath);
+
         document.getElementById('game-wrapper').innerHTML = '';
 
         const filename = romPath.split('/').pop();
+        console.log('Filename:', filename);
 
         new EmulatorJS('#game-wrapper', {
             system: system,
@@ -64,8 +67,11 @@ window.addEventListener('load', function() {
             autosave: true,
             dataPath: 'data/',
             width: 800,
-            height: 600
+            height: 600,
+            startOnLoad: true
         });
+
+        console.log('EmulatorJS called successfully');
     }
 
 });
