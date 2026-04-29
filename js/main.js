@@ -67,3 +67,4 @@ window.addEventListener('load', function() {
         height: 600
     });
     }
+}
