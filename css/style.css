@@ -143,26 +143,8 @@ main {
     image-rendering: pixelated;
 }
 
-#game-wrapper div,
-#game-wrapper nav,
-#game-wrapper ul {
+#game-wrapper *:not(canvas):not(iframe) {
     display: none !important;
-}
-
-.emulatorjs-menu-bar,
-.emulatorjs-control-bar,
-.emulatorjs-start-menu,
-div[class*="emulatorjs"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    height: 0 !important;
-    width: 0 !important;
-    overflow: hidden !important;
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
 }
 
 #control-bar {
