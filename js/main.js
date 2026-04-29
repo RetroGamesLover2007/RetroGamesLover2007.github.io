@@ -94,41 +94,25 @@ window.addEventListener('load', function() {
 
         setTimeout(function() {
             nukeEmulatorUI();
-            console.log('Emulator methods:', Object.keys(currentEmulator));
-            if (currentEmulator.gameManager) {
-                console.log('gameManager methods:', Object.keys(currentEmulator.gameManager));
-            }
         }, 2000);
     }
 
     document.getElementById('btn-play').addEventListener('click', function() {
-        console.log('Play clicked, emulator:', currentEmulator);
-        if (currentEmulator) {
-            if (typeof currentEmulator.resume === 'function') {
-                currentEmulator.resume();
-            } else if (currentEmulator.gameManager && typeof currentEmulator.gameManager.resume === 'function') {
-                currentEmulator.gameManager.resume();
-            } else {
-                console.log('Available methods:', Object.keys(currentEmulator));
-                if (currentEmulator.gameManager) {
-                    console.log('gameManager methods:', Object.keys(currentEmulator.gameManager));
-                }
-            }
+        if (currentEmulator && typeof currentEmulator.play === 'function') {
+            currentEmulator.play();
         }
     });
 
     document.getElementById('btn-pause').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.pause) {
+        if (currentEmulator && typeof currentEmulator.pause === 'function') {
             currentEmulator.pause();
-        } else if (currentEmulator && currentEmulator.gameManager && currentEmulator.gameManager.pause) {
-            currentEmulator.gameManager.pause();
         }
     });
 
     document.getElementById('btn-stop').addEventListener('click', function() {
         if (nukeInterval) clearInterval(nukeInterval);
         nukeInterval = null;
-        if (currentEmulator && currentEmulator.gameManager && currentEmulator.gameManager.exit) {
+        if (currentEmulator && currentEmulator.gameManager && typeof currentEmulator.gameManager.exit === 'function') {
             currentEmulator.gameManager.exit();
         }
         currentEmulator = null;
@@ -137,29 +121,20 @@ window.addEventListener('load', function() {
     });
 
     document.getElementById('btn-save').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.saveState) {
-            currentEmulator.saveState();
-        } else if (currentEmulator && currentEmulator.gameManager && currentEmulator.gameManager.saveState) {
+        if (currentEmulator && currentEmulator.gameManager && typeof currentEmulator.gameManager.saveState === 'function') {
             currentEmulator.gameManager.saveState();
         }
     });
 
     document.getElementById('btn-load').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.loadState) {
-            currentEmulator.loadState();
-        } else if (currentEmulator && currentEmulator.gameManager && currentEmulator.gameManager.loadState) {
+        if (currentEmulator && currentEmulator.gameManager && typeof currentEmulator.gameManager.loadState === 'function') {
             currentEmulator.gameManager.loadState();
         }
     });
 
     document.getElementById('btn-fullscreen').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.gameManager && currentEmulator.gameManager.openFullscreen) {
-            currentEmulator.gameManager.openFullscreen();
-        } else {
-            var wrapper = document.getElementById('game-wrapper');
-            if (wrapper.requestFullscreen) {
-                wrapper.requestFullscreen();
-            }
+        if (currentEmulator && typeof currentEmulator.toggleFullscreen === 'function') {
+            currentEmulator.toggleFullscreen();
         }
     });
 
