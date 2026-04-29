@@ -1,4 +1,43 @@
-<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0a0a0a;
+    color: #33ff33;
+    font-family: monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    width: 100%;
+    text-align: center;
+    padding: 30px 20px 10px 20px;
+    border-bottom: 2px solid #33ff33;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+    text-shadow: 0 0 15px #33ff33, 0 0 30px #33ff33;
+}
+
+main {
+    width: 100%;
+    max-width: 1150px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 0 20px;
+}
+
 #game-sidebar {
     width: 280px;
     min-width: 280px;
@@ -77,8 +116,14 @@
     font-weight: bold;
 }
 
+#game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
 #game-wrapper {
-    flex-grow: 0;
     border: 2px solid #33ff33;
     box-shadow: 0 0 15px rgba(51, 255, 51, 0.3);
     width: 800px;
@@ -91,48 +136,48 @@
     position: relative;
 }
 
+#game-wrapper canvas,
 #game-wrapper iframe {
-    width: 100% !important;
-    height: 100% !important;
-    border: none;
-}
-
-.emulatorjs-menu-bar button,
-.emulatorjs-menu-bar select,
-.emulatorjs-menu-bar input {
-    font-size: 10px !important;
-    padding: 2px 4px !important;
-    height: auto !important;
-    line-height: 1 !important;
-}
-
-.emulatorjs-menu-bar {
-    padding: 1px 3px !important;
-    min-height: auto !important;
-}
-
-#game-wrapper canvas {
     width: 800px !important;
     height: 600px !important;
     image-rendering: pixelated;
 }
 
-.emulatorjs-control-bar {
-    font-size: 10px !important;
-    padding: 3px 5px !important;
-    height: auto !important;
-    min-height: auto !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 5px !important;
-    flex-wrap: wrap !important;
+#control-bar {
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: #050505;
+    border: 2px solid #33ff33;
+    border-top: none;
 }
 
-.emulatorjs-control-bar button {
-    font-size: 10px !important;
-    padding: 2px 6px !important;
-    height: auto !important;
-    line-height: 1 !important;
+#control-bar button {
+    background: #0a0a0a;
+    color: #33ff33;
+    border: 2px solid #33ff33;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.1s ease;
 }
-</style>
+
+#control-bar button:hover {
+    background: #33ff33;
+    color: #0a0a0a;
+}
+
+#control-bar button:active {
+    background: #22aa22;
+    color: #0a0a0a;
+}
+
+.emulatorjs-menu-bar,
+.emulatorjs-control-bar {
+    display: none !important;
+}
