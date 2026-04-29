@@ -222,12 +222,25 @@
             ];
 
             var currentEmulator = null;
+            var killInterval = null;
 
             const searchInput = document.getElementById('search-bar');
             const gameList = document.getElementById('game-list');
             const controlBar = document.getElementById('control-bar');
 
             controlBar.style.display = 'none';
+
+            function killEmulatorUI() {
+                var wrapper = document.getElementById('game-wrapper');
+                if (!wrapper) return;
+
+                var allDivs = wrapper.querySelectorAll('div');
+                for (var i = 0; i < allDivs.length; i++) {
+                    var el = allDivs[i];
+                    if (el.id === 'game-wrapper') continue;
+                    el.style.display = 'none';
+                }
+            }
 
             function renderGameList(filterText) {
                 gameList.innerHTML = '';
@@ -270,6 +283,8 @@
             renderGameList('');
 
             function launchGame(system, romPath) {
+                if (killInterval) clearInterval(killInterval);
+
                 var wrapper = document.getElementById('game-wrapper');
                 wrapper.innerHTML = '';
 
@@ -292,7 +307,9 @@
                         canvas.style.width = '800px';
                         canvas.style.height = '600px';
                     }
-                }, 1000);
+                    killEmulatorUI();
+                    killInterval = setInterval(killEmulatorUI, 1000);
+                }, 2000);
             }
 
             document.getElementById('btn-play').addEventListener('click', function() {
@@ -308,6 +325,8 @@
             });
 
             document.getElementById('btn-stop').addEventListener('click', function() {
+                if (killInterval) clearInterval(killInterval);
+                killInterval = null;
                 if (currentEmulator && currentEmulator.gameManager && typeof currentEmulator.gameManager.exit === 'function') {
                     currentEmulator.gameManager.exit();
                 }
