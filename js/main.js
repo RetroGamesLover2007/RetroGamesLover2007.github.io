@@ -8,30 +8,8 @@ window.addEventListener('load', function() {
         { name: "Streets of Rage 2", system: "segaMD", rom: "roms/sor2.md" }
     ];
 
-    const mainArea = document.querySelector('main');
-    const gameWrapper = document.getElementById('game-wrapper');
-
-    const sidebar = document.createElement('div');
-    sidebar.id = 'game-sidebar';
-
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.id = 'search-bar';
-    searchInput.placeholder = '🔍  Search games...';
-
-    const gameList = document.createElement('div');
-    gameList.id = 'game-list';
-
-    sidebar.appendChild(searchInput);
-    sidebar.appendChild(gameList);
-
-    mainArea.insertBefore(sidebar, gameWrapper);
-
-    mainArea.style.display = 'flex';
-    mainArea.style.flexDirection = 'row';
-    mainArea.style.alignItems = 'flex-start';
-    mainArea.style.gap = '20px';
-    mainArea.style.maxWidth = '1100px';
+    const searchInput = document.getElementById('search-bar');
+    const gameList = document.getElementById('game-list');
 
     function renderGameList(filterText) {
         gameList.innerHTML = '';
@@ -66,14 +44,17 @@ window.addEventListener('load', function() {
             gameList.appendChild(item);
         });
     }
+
     searchInput.addEventListener('input', function() {
         renderGameList(this.value);
     });
-    renderGameList('');
-    function launchGame(system, romPath) {
-        gameWrapper.innerHTML = '';
 
-        new EmulatorJS(document.getElementById('game-wrapper'), {
+    renderGameList('');
+
+    function launchGame(system, romPath) {
+        document.getElementById('game-wrapper').innerHTML = '';
+
+        new EmulatorJS('#game-wrapper', {
             system: system,
             rom: romPath,
             autosave: true,
