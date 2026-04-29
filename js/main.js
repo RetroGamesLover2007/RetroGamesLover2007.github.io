@@ -62,7 +62,10 @@ window.addEventListener('load', function() {
         gameUrl: romPath,
         gameFileName: filename,
         autosave: true,
-        dataPath: 'data/'
+        dataPath: 'data/',
+        controlBarPosition: 'bottom',
+        controlBarVisible: true,
+        controlBarCollapsed: false
     });
 
     setTimeout(function() {
