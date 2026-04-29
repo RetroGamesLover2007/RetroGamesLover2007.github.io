@@ -283,30 +283,45 @@
                 gameFileName: filename,
                 autosave: false,
                 dataPath: 'data/',
-                width: 1200,
-                height: 900
+                width: window.innerWidth,
+                height: window.innerHeight
             });
 
             controlBar.style.display = 'flex';
 
             setTimeout(function() {
                 var canvas = document.querySelector('#game-wrapper canvas');
-                if (!canvas) return;
+                if (canvas) {
+                    canvas.style.position = 'fixed';
+                    canvas.style.top = '0px';
+                    canvas.style.left = '0px';
+                    canvas.style.width = '100vw';
+                    canvas.style.height = '100vh';
+                    canvas.style.transform = 'none';
+                    canvas.style.margin = '0px';
+                    canvas.style.padding = '0px';
+                    canvas.style.zIndex = '0';
+                    canvas.style.objectFit = 'contain';
+                    canvas.style.imageRendering = 'pixelated';
+                }
 
-                canvas.style.cssText = '';
-                canvas.setAttribute('style', '');
-
-                canvas.style.position = 'absolute';
-                canvas.style.top = '0px';
-                canvas.style.left = '0px';
-                canvas.style.width = '100%';
-                canvas.style.height = '100%';
-                canvas.style.objectFit = 'contain';
-                canvas.style.margin = '0px';
-                canvas.style.padding = '0px';
-                canvas.style.transform = 'none';
-                canvas.style.imageRendering = 'pixelated';
+                wrapper.style.position = 'fixed';
+                wrapper.style.top = '0';
+                wrapper.style.left = '0';
+                wrapper.style.width = '100vw';
+                wrapper.style.height = '100vh';
+                wrapper.style.border = 'none';
+                wrapper.style.zIndex = '999';
+                wrapper.style.margin = '0';
             }, 1500);
+
+            setTimeout(function() {
+                if (wrapper.requestFullscreen) {
+                    wrapper.requestFullscreen();
+                } else if (wrapper.webkitRequestFullscreen) {
+                    wrapper.webkitRequestFullscreen();
+                }
+            }, 2000);
         }
 
         document.getElementById('btn-play').addEventListener('click', function() {
@@ -326,7 +341,16 @@
                 currentEmulator.gameManager.exit();
             }
             currentEmulator = null;
-            document.getElementById('game-wrapper').innerHTML = '';
+            var wrapper = document.getElementById('game-wrapper');
+            wrapper.innerHTML = '';
+            wrapper.style.position = '';
+            wrapper.style.top = '';
+            wrapper.style.left = '';
+            wrapper.style.width = '';
+            wrapper.style.height = '';
+            wrapper.style.border = '';
+            wrapper.style.zIndex = '';
+            wrapper.style.margin = '';
             controlBar.style.display = 'none';
         });
 
