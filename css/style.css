@@ -96,12 +96,16 @@
     border: none;
 }
 
-.emulatorjs-menu-bar {
-    font-size: 12px !important;
-    padding: 2px 5px !important;
+.emulatorjs-menu-bar button,
+.emulatorjs-menu-bar select,
+.emulatorjs-menu-bar input {
+    font-size: 10px !important;
+    padding: 2px 4px !important;
+    height: auto !important;
+    line-height: 1 !important;
 }
 
-.emulatorjs-menu-bar button {
-    font-size: 10px !important;
-    padding: 2px 6px !important;
+.emulatorjs-menu-bar {
+    padding: 1px 3px !important;
+    min-height: auto !important;
 }
