@@ -73,7 +73,7 @@ window.addEventListener('load', function() {
     function launchGame(system, romPath) {
         gameWrapper.innerHTML = '';
 
-        new EmulatorJS(gameWrapper, {
+        new EmulatorJS(document.getElementById('game-wrapper'), {
             system: system,
             rom: romPath,
             autosave: true,
