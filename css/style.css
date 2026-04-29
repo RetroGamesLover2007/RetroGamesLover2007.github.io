@@ -129,16 +129,19 @@ main {
     width: 1200px;
     height: 900px;
     overflow: hidden;
+    position: relative;
 }
 
-#game-wrapper canvas,
-#game-wrapper iframe {
-    width: 1200px !important;
-    height: 900px !important;
+#game-wrapper canvas {
     position: absolute;
     top: 0;
     left: 0;
-    object-fit: contain;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    transform: none !important;
+    margin: 0 !important;
+    image-rendering: pixelated;
 }
 
 /* Only bury EmulatorJS menu/control bars, not the canvas container */
