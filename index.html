@@ -298,20 +298,9 @@
                     canvas.style.position = 'fixed';
                     canvas.style.top = '0px';
                     canvas.style.left = '0px';
-                    canvas.style.transform = 'none';
-                    canvas.style.margin = '0px';
                     canvas.style.zIndex = '9999';
-                    canvas.style.objectFit = 'fill';
-                    canvas.style.imageRendering = 'pixelated';
+                    canvas.style.backgroundColor = '#000';
                 }
-
-                var uiElements = document.querySelectorAll('.emulatorjs-menu-bar, .emulatorjs-control-bar, .emulatorjs-start-menu, .emulatorjs-cheats-menu, .emulatorjs-save-menu');
-                uiElements.forEach(function(el) {
-                    el.style.position = 'fixed';
-                    el.style.top = '-9999px';
-                    el.style.left = '-9999px';
-                    el.style.zIndex = '-1';
-                });
             }, 1500);
         }
 
