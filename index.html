@@ -223,6 +223,7 @@
         ];
 
         var currentEmulator = null;
+        var currentAspectRatio = null;
 
         const searchInput = document.getElementById('search-bar');
         const gameList = document.getElementById('game-list');
@@ -276,13 +277,25 @@
 
             var filename = romPath.split('/').pop();
 
+            if (system === 'nes') {
+                currentAspectRatio = 8/7;
+            } else if (system === 'snes') {
+                currentAspectRatio = 4/3;
+            } else if (system === 'segaMD') {
+                currentAspectRatio = 4/3;
+            } else {
+                currentAspectRatio = 4/3;
+            }
+
             currentEmulator = new EmulatorJS('#game-wrapper', {
                 system: system,
                 rom: romPath,
                 gameUrl: romPath,
                 gameFileName: filename,
                 autosave: false,
-                dataPath: 'data/'
+                dataPath: 'data/',
+                width: 1200,
+                height: Math.round(1200 / currentAspectRatio)
             });
 
             controlBar.style.display = 'flex';
@@ -290,10 +303,10 @@
             setTimeout(function() {
                 var canvas = document.querySelector('#game-wrapper canvas');
                 if (canvas) {
-                    canvas.style.width = '1100px';
-                    canvas.style.height = '600px';
+                    canvas.style.width = '1200px';
+                    canvas.style.height = Math.round(1200 / currentAspectRatio) + 'px';
                 }
-            }, 1500);
+            }, 1000);
         }
 
         document.getElementById('btn-play').addEventListener('click', function() {
