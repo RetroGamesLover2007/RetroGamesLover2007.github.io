@@ -116,4 +116,23 @@
     height: 600px !important;
     image-rendering: pixelated;
 }
+
+.emulatorjs-control-bar {
+    font-size: 10px !important;
+    padding: 3px 5px !important;
+    height: auto !important;
+    min-height: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 5px !important;
+    flex-wrap: wrap !important;
+}
+
+.emulatorjs-control-bar button {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    height: auto !important;
+    line-height: 1 !important;
+}
 </style>
