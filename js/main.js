@@ -53,7 +53,7 @@ window.addEventListener('load', function() {
 
     function launchGame(system, romPath) {
     document.getElementById('game-wrapper').innerHTML = '';
-    
+
     const filename = romPath.split('/').pop();
 
     new EmulatorJS('#game-wrapper', {
@@ -62,7 +62,8 @@ window.addEventListener('load', function() {
         gameUrl: romPath,
         gameFileName: filename,
         autosave: true,
-        dataPath: 'data/'
+        dataPath: 'data/',
+        width: 800,
+        height: 600
+    }
     });
-}
-});
