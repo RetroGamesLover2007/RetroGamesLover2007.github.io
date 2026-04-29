@@ -158,13 +158,23 @@
         <h1>RETRO VAULT</h1>
     </header>
 
-    <main>
-        <div id="game-sidebar">
-            <input type="text" id="search-bar" placeholder="Search games...">
-            <div id="game-list"></div>
-        </div>
+<main>
+    <div id="game-sidebar">
+        <input type="text" id="search-bar" placeholder="Search games...">
+        <div id="game-list"></div>
+    </div>
+    <div id="game-area">
         <div id="game-wrapper"></div>
-    </main>
+        <div id="control-bar">
+            <button id="btn-play">▶ Play</button>
+            <button id="btn-pause">⏸ Pause</button>
+            <button id="btn-stop">⏹ Stop</button>
+            <button id="btn-save">💾 Save</button>
+            <button id="btn-load">📂 Load</button>
+            <button id="btn-fullscreen">⛶ Full</button>
+        </div>
+    </div>
+</main>    
 
     <script src="js/emulator.min.js"></script>
     <script src="js/main.js"></script>
