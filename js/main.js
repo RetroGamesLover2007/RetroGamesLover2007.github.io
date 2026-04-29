@@ -9,6 +9,7 @@ window.addEventListener('load', function() {
     ];
 
     var currentEmulator = null;
+    var nukeInterval = null;
 
     const searchInput = document.getElementById('search-bar');
     const gameList = document.getElementById('game-list');
@@ -16,15 +17,32 @@ window.addEventListener('load', function() {
 
     controlBar.style.display = 'none';
 
+    function nukeEmulatorUI() {
+        var selectors = [
+            '.emulatorjs-menu-bar',
+            '.emulatorjs-control-bar',
+            '.emulatorjs-start-menu',
+            '.emulatorjs-cheats-menu',
+            '.emulatorjs-save-menu',
+            '[class*="emulatorjs"]'
+        ];
+        selectors.forEach(function(sel) {
+            var els = document.querySelectorAll(sel);
+            els.forEach(function(el) {
+                el.remove();
+            });
+        });
+    }
+
     function renderGameList(filterText) {
         gameList.innerHTML = '';
 
-        const filtered = games.filter(function(game) {
+        var filtered = games.filter(function(game) {
             return game.name.toLowerCase().includes(filterText.toLowerCase());
         });
 
         if (filtered.length === 0) {
-            const emptyMsg = document.createElement('p');
+            var emptyMsg = document.createElement('p');
             emptyMsg.textContent = 'No games found.';
             emptyMsg.style.padding = '15px';
             emptyMsg.style.color = '#33ff33';
@@ -34,7 +52,7 @@ window.addEventListener('load', function() {
         }
 
         filtered.forEach(function(game) {
-            const item = document.createElement('div');
+            var item = document.createElement('div');
             item.className = 'game-item';
             item.textContent = game.name;
 
@@ -57,9 +75,11 @@ window.addEventListener('load', function() {
     renderGameList('');
 
     function launchGame(system, romPath) {
+        if (nukeInterval) clearInterval(nukeInterval);
+
         document.getElementById('game-wrapper').innerHTML = '';
 
-        const filename = romPath.split('/').pop();
+        var filename = romPath.split('/').pop();
 
         currentEmulator = new EmulatorJS('#game-wrapper', {
             system: system,
@@ -69,28 +89,22 @@ window.addEventListener('load', function() {
             autosave: false,
             dataPath: 'data/',
             controlBarVisible: false,
-            menuBarVisible: false
+            menuBarVisible: false,
+            cheatsMenuVisible: false,
+            saveMenuVisible: false
         });
 
         controlBar.style.display = 'flex';
 
         setTimeout(function() {
             var canvas = document.querySelector('#game-wrapper canvas');
-            var iframe = document.querySelector('#game-wrapper iframe');
             if (canvas) {
                 canvas.style.width = '800px';
                 canvas.style.height = '600px';
             }
-            if (iframe) {
-                iframe.style.width = '800px';
-                iframe.style.height = '600px';
-            }
-
-            var builtInUI = document.querySelectorAll('.emulatorjs-menu-bar, .emulatorjs-control-bar, .emulatorjs-start-menu');
-            builtInUI.forEach(function(el) {
-                el.remove();
-            });
-        }, 1500);
+            nukeEmulatorUI();
+            nukeInterval = setInterval(nukeEmulatorUI, 500);
+        }, 1000);
     }
 
     document.getElementById('btn-play').addEventListener('click', function() {
@@ -106,29 +120,36 @@ window.addEventListener('load', function() {
     });
 
     document.getElementById('btn-stop').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.exit) {
-            currentEmulator.exit();
-            currentEmulator = null;
-            document.getElementById('game-wrapper').innerHTML = '';
-            controlBar.style.display = 'none';
+        if (nukeInterval) clearInterval(nukeInterval);
+        nukeInterval = null;
+        if (currentEmulator && currentEmulator.gameManager) {
+            currentEmulator.gameManager.exit();
         }
+        currentEmulator = null;
+        document.getElementById('game-wrapper').innerHTML = '';
+        controlBar.style.display = 'none';
     });
 
     document.getElementById('btn-save').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.saveState) {
-            currentEmulator.saveState();
+        if (currentEmulator && currentEmulator.gameManager) {
+            currentEmulator.gameManager.saveState();
         }
     });
 
     document.getElementById('btn-load').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.loadState) {
-            currentEmulator.loadState();
+        if (currentEmulator && currentEmulator.gameManager) {
+            currentEmulator.gameManager.loadState();
         }
     });
 
     document.getElementById('btn-fullscreen').addEventListener('click', function() {
-        if (currentEmulator && currentEmulator.enterFullscreen) {
-            currentEmulator.enterFullscreen();
+        var wrapper = document.getElementById('game-wrapper');
+        if (wrapper.requestFullscreen) {
+            wrapper.requestFullscreen();
+        } else if (wrapper.webkitRequestFullscreen) {
+            wrapper.webkitRequestFullscreen();
+        } else if (wrapper.msRequestFullscreen) {
+            wrapper.msRequestFullscreen();
         }
     });
 
