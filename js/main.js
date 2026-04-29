@@ -65,5 +65,5 @@ window.addEventListener('load', function() {
         dataPath: 'data/',
         width: 800,
         height: 600
-    }
     });
+    }
