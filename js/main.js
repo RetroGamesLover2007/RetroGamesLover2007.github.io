@@ -52,26 +52,33 @@ window.addEventListener('load', function() {
     renderGameList('');
 
     function launchGame(system, romPath) {
-        console.log('Launching game:', system, romPath);
+    document.getElementById('game-wrapper').innerHTML = '';
 
-        document.getElementById('game-wrapper').innerHTML = '';
+    const filename = romPath.split('/').pop();
 
-        const filename = romPath.split('/').pop();
-        console.log('Filename:', filename);
+    new EmulatorJS('#game-wrapper', {
+        system: system,
+        rom: romPath,
+        gameUrl: romPath,
+        gameFileName: filename,
+        autosave: true,
+        dataPath: 'data/'
+    });
 
-        new EmulatorJS('#game-wrapper', {
-            system: system,
-            rom: romPath,
-            gameUrl: romPath,
-            gameFileName: filename,
-            autosave: true,
-            dataPath: 'data/',
-            width: 800,
-            height: 600,
-            startOnLoad: true
-        });
-
-        console.log('EmulatorJS called successfully');
-    }
+    setTimeout(function() {
+        const canvas = document.querySelector('#game-wrapper canvas');
+        const iframe = document.querySelector('#game-wrapper iframe');
+        
+        if (canvas) {
+            canvas.style.width = '800px';
+            canvas.style.height = '600px';
+        }
+        
+        if (iframe) {
+            iframe.style.width = '800px';
+            iframe.style.height = '600px';
+        }
+    }, 1000);
+}
 
 });
