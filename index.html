@@ -292,36 +292,26 @@
             setTimeout(function() {
                 var canvas = document.querySelector('#game-wrapper canvas');
                 if (canvas) {
+                    canvas.style.width = window.innerWidth + 'px';
+                    canvas.style.height = window.innerHeight + 'px';
                     canvas.style.position = 'fixed';
                     canvas.style.top = '0px';
                     canvas.style.left = '0px';
-                    canvas.style.width = '100vw';
-                    canvas.style.height = '100vh';
                     canvas.style.transform = 'none';
                     canvas.style.margin = '0px';
-                    canvas.style.padding = '0px';
-                    canvas.style.zIndex = '0';
-                    canvas.style.objectFit = 'contain';
+                    canvas.style.zIndex = '9999';
+                    canvas.style.objectFit = 'fill';
                     canvas.style.imageRendering = 'pixelated';
                 }
 
-                wrapper.style.position = 'fixed';
-                wrapper.style.top = '0';
-                wrapper.style.left = '0';
-                wrapper.style.width = '100vw';
-                wrapper.style.height = '100vh';
-                wrapper.style.border = 'none';
-                wrapper.style.zIndex = '999';
-                wrapper.style.margin = '0';
+                var uiElements = document.querySelectorAll('.emulatorjs-menu-bar, .emulatorjs-control-bar, .emulatorjs-start-menu, .emulatorjs-cheats-menu, .emulatorjs-save-menu');
+                uiElements.forEach(function(el) {
+                    el.style.position = 'fixed';
+                    el.style.top = '-9999px';
+                    el.style.left = '-9999px';
+                    el.style.zIndex = '-1';
+                });
             }, 1500);
-
-            setTimeout(function() {
-                if (wrapper.requestFullscreen) {
-                    wrapper.requestFullscreen();
-                } else if (wrapper.webkitRequestFullscreen) {
-                    wrapper.webkitRequestFullscreen();
-                }
-            }, 2000);
         }
 
         document.getElementById('btn-play').addEventListener('click', function() {
@@ -341,17 +331,11 @@
                 currentEmulator.gameManager.exit();
             }
             currentEmulator = null;
-            var wrapper = document.getElementById('game-wrapper');
-            wrapper.innerHTML = '';
-            wrapper.style.position = '';
-            wrapper.style.top = '';
-            wrapper.style.left = '';
-            wrapper.style.width = '';
-            wrapper.style.height = '';
-            wrapper.style.border = '';
-            wrapper.style.zIndex = '';
-            wrapper.style.margin = '';
+            document.getElementById('game-wrapper').innerHTML = '';
             controlBar.style.display = 'none';
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
         });
 
         document.getElementById('btn-save').addEventListener('click', function() {
@@ -367,11 +351,14 @@
         });
 
         document.getElementById('btn-fullscreen').addEventListener('click', function() {
-            var wrapper = document.getElementById('game-wrapper');
-            if (wrapper.requestFullscreen) {
-                wrapper.requestFullscreen();
-            } else if (wrapper.webkitRequestFullscreen) {
-                wrapper.webkitRequestFullscreen();
+            if (currentEmulator && currentEmulator.gameManager && typeof currentEmulator.gameManager.openFullscreen === 'function') {
+                currentEmulator.gameManager.openFullscreen();
+            }
+        });
+
+        document.getElementById('btn-leave-fullscreen').addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
             }
         });
 
