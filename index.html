@@ -223,7 +223,6 @@
         ];
 
         var currentEmulator = null;
-        var currentAspectRatio = null;
 
         const searchInput = document.getElementById('search-bar');
         const gameList = document.getElementById('game-list');
@@ -277,19 +276,6 @@
 
             var filename = romPath.split('/').pop();
 
-            if (system === 'nes') {
-                currentAspectRatio = 8/7;
-            } else if (system === 'snes') {
-                currentAspectRatio = 4/3;
-            } else if (system === 'segaMD') {
-                currentAspectRatio = 4/3;
-            } else {
-                currentAspectRatio = 4/3;
-            }
-
-            var gameWidth = 1200;
-            var gameHeight = Math.round(gameWidth / currentAspectRatio);
-
             currentEmulator = new EmulatorJS('#game-wrapper', {
                 system: system,
                 rom: romPath,
@@ -297,24 +283,30 @@
                 gameFileName: filename,
                 autosave: false,
                 dataPath: 'data/',
-                width: gameWidth,
-                height: gameHeight
+                width: 1200,
+                height: 900
             });
 
             controlBar.style.display = 'flex';
 
             setTimeout(function() {
                 var canvas = document.querySelector('#game-wrapper canvas');
-                if (canvas) {
-                    canvas.style.position = 'absolute';
-                    canvas.style.top = '0px';
-                    canvas.style.left = '0px';
-                    canvas.style.transform = 'none';
-                    canvas.style.margin = '0px';
-                    canvas.style.width = gameWidth + 'px';
-                    canvas.style.height = gameHeight + 'px';
-                }
-            }, 1000);
+                if (!canvas) return;
+
+                canvas.style.cssText = '';
+                canvas.setAttribute('style', '');
+
+                canvas.style.position = 'absolute';
+                canvas.style.top = '0px';
+                canvas.style.left = '0px';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.objectFit = 'contain';
+                canvas.style.margin = '0px';
+                canvas.style.padding = '0px';
+                canvas.style.transform = 'none';
+                canvas.style.imageRendering = 'pixelated';
+            }, 1500);
         }
 
         document.getElementById('btn-play').addEventListener('click', function() {
@@ -351,8 +343,11 @@
         });
 
         document.getElementById('btn-fullscreen').addEventListener('click', function() {
-            if (currentEmulator && currentEmulator.gameManager && typeof currentEmulator.gameManager.openFullscreen === 'function') {
-                currentEmulator.gameManager.openFullscreen();
+            var wrapper = document.getElementById('game-wrapper');
+            if (wrapper.requestFullscreen) {
+                wrapper.requestFullscreen();
+            } else if (wrapper.webkitRequestFullscreen) {
+                wrapper.webkitRequestFullscreen();
             }
         });
 
