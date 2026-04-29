@@ -75,8 +75,8 @@ window.addEventListener('load', function() {
         controlBar.style.display = 'flex';
 
         setTimeout(function() {
-            const canvas = document.querySelector('#game-wrapper canvas');
-            const iframe = document.querySelector('#game-wrapper iframe');
+            var canvas = document.querySelector('#game-wrapper canvas');
+            var iframe = document.querySelector('#game-wrapper iframe');
             if (canvas) {
                 canvas.style.width = '800px';
                 canvas.style.height = '600px';
@@ -85,19 +85,28 @@ window.addEventListener('load', function() {
                 iframe.style.width = '800px';
                 iframe.style.height = '600px';
             }
-        }, 1000);
+
+            var builtInUI = document.querySelectorAll('.emulatorjs-menu-bar, .emulatorjs-control-bar, .emulatorjs-start-menu');
+            builtInUI.forEach(function(el) {
+                el.remove();
+            });
+        }, 1500);
     }
 
     document.getElementById('btn-play').addEventListener('click', function() {
-        if (currentEmulator) currentEmulator.resume();
+        if (currentEmulator && currentEmulator.resume) {
+            currentEmulator.resume();
+        }
     });
 
     document.getElementById('btn-pause').addEventListener('click', function() {
-        if (currentEmulator) currentEmulator.pause();
+        if (currentEmulator && currentEmulator.pause) {
+            currentEmulator.pause();
+        }
     });
 
     document.getElementById('btn-stop').addEventListener('click', function() {
-        if (currentEmulator) {
+        if (currentEmulator && currentEmulator.exit) {
             currentEmulator.exit();
             currentEmulator = null;
             document.getElementById('game-wrapper').innerHTML = '';
@@ -106,15 +115,21 @@ window.addEventListener('load', function() {
     });
 
     document.getElementById('btn-save').addEventListener('click', function() {
-        if (currentEmulator) currentEmulator.saveState();
+        if (currentEmulator && currentEmulator.saveState) {
+            currentEmulator.saveState();
+        }
     });
 
     document.getElementById('btn-load').addEventListener('click', function() {
-        if (currentEmulator) currentEmulator.loadState();
+        if (currentEmulator && currentEmulator.loadState) {
+            currentEmulator.loadState();
+        }
     });
 
     document.getElementById('btn-fullscreen').addEventListener('click', function() {
-        if (currentEmulator) currentEmulator.enterFullscreen();
+        if (currentEmulator && currentEmulator.enterFullscreen) {
+            currentEmulator.enterFullscreen();
+        }
     });
 
 });
